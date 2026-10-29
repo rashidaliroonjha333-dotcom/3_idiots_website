@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Shop shoes, clothes and slippers at 3 Idiots — everyday style with personality."><title>Your bag | 3 Idiots</title><link rel="stylesheet" href="style.css"></head><body>
+
+<div class="announcement">Good fits. Better days. — Free delivery on orders over Rs. 5,000</div>
+<header class="site-header"><div class="nav-wrap">
+<a class="logo" href="index.html">3 <span>IDIOTS</span><small style="display:block;font:600 .58rem 'DM Sans';letter-spacing:.22em;margin-top:-3px">STYLE DEPARTMENT</small></a>
+<button class="menu-toggle" aria-label="Open navigation">☰</button>
+<nav class="nav-links">
+<a href="index.html">Home</a><a href="shoes.html">Shoes</a><a href="clothes.html">Clothes</a><a href="slippers.html">Slippers</a><a href="new-arrivals.html">New arrivals</a><a href="about.html">Our story</a><a href="contact.html">Contact</a>
+</nav><div class="nav-actions"><a class="cart-pill" href="cart.html">Bag (<span data-cart-count>0</span>)</a></div>
+</div></header>
+
+
+<main><section class="page-hero"><div class="container"><span class="eyebrow">Your picks</span><h1>Your bag.</h1><p>All your good finds, in one place.</p></div></section><section class="section"><div class="container"><div id="cart-content"></div></div></section></main>
+<script>
+function renderCart(){let root=document.querySelector('#cart-content');let cart=getCart();if(!cart.length){root.innerHTML='<div class="empty-state"><div class="emoji">🛍️</div><h2>Your bag is taking it easy.</h2><p class="muted">You haven’t added anything yet. Your next favourite might be one click away.</p><a class="btn" href="new-arrivals.html">Explore new arrivals ↗</a></div>';return}
+let subtotal=0;let rows=cart.map(i=>{let p=PRODUCTS.find(x=>x.id===i.id);if(!p)return '';subtotal+=p.price*i.qty;return `<div class="cart-item"><img src="${p.image}" alt="${p.name}"><div><h3>${p.name}</h3><span class="muted">${p.category} · ${money(p.price)}</span><div class="qty-controls"><button onclick="changeQty('${p.id}',-1)">−</button><span>${i.qty}</span><button onclick="changeQty('${p.id}',1)">＋</button><button class="btn small outline" onclick="removeItem('${p.id}')">Remove</button></div></div><strong>${money(p.price*i.qty)}</strong></div>`}).join('');
+let delivery=subtotal>=5000?0:250;root.innerHTML=`<div class="cart-layout"><div class="cart-list"><h2 style="font-size:1.7rem">Your items (${cart.reduce((s,i)=>s+i.qty,0)})</h2>${rows}<p class="muted" style="margin:18px 0 0">Shipping is calculated for this demo store. Free delivery over Rs. 5,000.</p></div><aside class="summary"><h2 style="font-size:1.7rem">Order summary</h2><div class="summary-row"><span>Subtotal</span><strong>${money(subtotal)}</strong></div><div class="summary-row"><span>Delivery</span><strong>${delivery===0?'FREE':money(delivery)}</strong></div><div class="summary-row" style="font-size:1.1rem"><strong>Total</strong><strong>${money(subtotal+delivery)}</strong></div><button onclick="checkout()">Continue to checkout ↗</button><a class="btn outline" style="width:100%;margin-top:10px" href="shoes.html">Keep shopping</a><p id="checkout-note" class="notice">Checkout is a demo. Connect a payment provider and order backend to accept real orders.</p></aside></div>`}
+function changeQty(id,delta){let c=getCart();let i=c.find(x=>x.id===id);if(i)i.qty+=delta;c=c.filter(x=>x.qty>0);saveCart(c);renderCart()}
+function removeItem(id){saveCart(getCart().filter(x=>x.id!==id));renderCart()}
+function checkout(){document.querySelector('#checkout-note').classList.add('show')}
+document.addEventListener('DOMContentLoaded',renderCart)
+</script>
+
+
+<section class="newsletter"><div class="container newsletter-inner"><div><span class="eyebrow">Stay in the loop</span><h2 style="font-size:2rem;margin:8px 0">Good things land here.</h2><p class="muted" style="margin:0">New drops, fresh fits, and member-only updates.</p><p id="newsletter-note" class="notice"></p></div><form class="newsletter-form" onsubmit="subscribe(event)"><input type="email" placeholder="Your email address" aria-label="Email address" required><button type="submit">Join us ↗</button></form></div></section>
+<footer class="site-footer"><div class="container"><div class="footer-grid">
+<div><a class="logo" href="index.html" style="color:white">3 <span>IDIOTS</span></a><p>Everyday essentials for people who like their style easy, expressive, and a little unexpected.</p></div>
+<div><h3>Shop</h3><div class="footer-links"><a href="shoes.html">Shoes</a><a href="clothes.html">Clothes</a><a href="slippers.html">Slippers</a><a href="new-arrivals.html">New arrivals</a></div></div>
+<div><h3>3 Idiots</h3><div class="footer-links"><a href="about.html">Our story</a><a href="contact.html">Contact us</a><a href="cart.html">Your bag</a></div></div>
+<div><h3>Need help?</h3><div class="footer-links"><a href="contact.html">Delivery questions</a><a href="contact.html">Returns & exchanges</a><a href="mailto:hello@3idiots.example">hello@3idiots.example</a></div></div>
+</div><div class="footer-bottom"><span>© <span data-year></span> 3 Idiots. All style reserved.</span><span>Made for everyday moves · Pakistan</span></div></div></footer><div class="toast" role="status"></div>
+
+<script src="script.js"></script>
+<script>document.querySelectorAll('.nav-links a').forEach(a=>{if(a.getAttribute('href')===location.pathname.split('/').pop())a.classList.add('active')});</script>
+</body></html>
